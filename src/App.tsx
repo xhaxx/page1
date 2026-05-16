@@ -89,9 +89,9 @@ export default function App() {
           <hr className="my-[2vw] border-none border-t border-white/60" />
           <div>
             <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
-              Backend
+              Full-stack
               <br />
-              Engineer
+              Developer
             </h2>
           </div>
           <hr className="my-[2vw] border-none border-t border-white/60" />
@@ -162,10 +162,8 @@ export default function App() {
           </p>
           <hr className="my-[1.5vw] border-none border-t border-white/15" />
           <div>
-            <h2 className="text-[clamp(2.2rem,6vw,5rem)] font-bold leading-[0.9] uppercase tracking-tight">
-              项目
-              <br />
-              作品
+            <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
+              Projects
             </h2>
             <p className="mt-[1.5vw] max-w-[50ch] text-[clamp(0.9rem,1.3vw,1.1rem)] leading-relaxed opacity-70">
               每一个项目都是一次探索，每一行代码都承载着思考。
@@ -223,10 +221,8 @@ export default function App() {
           </p>
           <hr className="my-[1.5vw] border-none border-t border-white/15" />
           <div>
-            <h2 className="text-[clamp(2.2rem,6vw,5rem)] font-bold leading-[0.9] uppercase tracking-tight">
-              技术
-              <br />
-              笔记
+            <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
+              Notes
             </h2>
             <p className="mt-[1.5vw] max-w-[50ch] text-[clamp(0.9rem,1.3vw,1.1rem)] leading-relaxed opacity-70">
               记录后端开发中的技术积累与实践经验。
@@ -267,10 +263,10 @@ export default function App() {
           </p>
           <hr className="my-[1.5vw] border-none border-t border-white/15" />
           <div>
-            <h2 className="text-[clamp(2.2rem,6vw,5rem)] font-bold leading-[0.9] uppercase tracking-tight">
-              思维
+            <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
+              Mind
               <br />
-              导图
+              Map
             </h2>
             <p className="mt-[1.5vw] max-w-[50ch] text-[clamp(0.9rem,1.3vw,1.1rem)] leading-relaxed opacity-70">
               Java 核心知识体系的思维导图整理。
@@ -317,13 +313,11 @@ export default function App() {
           </p>
           <hr className="my-[1.5vw] border-none border-t border-white/15" />
           <div>
-            <h2 className="text-[clamp(2.2rem,6vw,5rem)] font-bold leading-[0.9] uppercase tracking-tight">
-              与我
-              <br />
-              联系
+            <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
+              Connect
             </h2>
             <p className="mt-[1.5vw] max-w-[50ch] text-[clamp(0.9rem,1.3vw,1.1rem)] leading-relaxed opacity-70">
-              如果你对技术有相似的兴趣，欢迎随时交流。永远相信美好的事情即将发生！
+              本人为985大学软工大三学生，正在求职，欢迎各位伯乐！如果你对技术有相似的兴趣，欢迎随时交流。
             </p>
           </div>
           <hr className="my-[1.5vw] border-none border-t border-white/15" />
@@ -339,27 +333,26 @@ export default function App() {
               </div>
             </a>
             <a
-              href="https://gitcode.com/2301_79962008"
+              href="https://github.com/xhaxx"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-[clamp(1rem,1.5vw,1.5rem)] py-[clamp(0.8rem,1.2vw,1.2rem)] backdrop-blur transition-colors hover:border-orange-500/30 hover:bg-white/[0.06]"
             >
               <span className="text-2xl">🔗</span>
               <div>
-                <p className="text-sm font-bold text-white">GitCode</p>
-                <p className="text-xs text-slate-400">2301_79962008</p>
+                <p className="text-sm font-bold text-white">GitHub</p>
+                <p className="text-xs text-slate-400">xhaxx</p>
               </div>
             </a>
             <a
-              href="https://houkaijian.xyz/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#"
               className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-[clamp(1rem,1.5vw,1.5rem)] py-[clamp(0.8rem,1.2vw,1.2rem)] backdrop-blur transition-colors hover:border-orange-500/30 hover:bg-white/[0.06]"
+              onClick={(e) => e.preventDefault()}
             >
-              <span className="text-2xl">🌐</span>
+              <span className="text-2xl">💬</span>
               <div>
-                <p className="text-sm font-bold text-white">Website</p>
-                <p className="text-xs text-slate-400">houkaijian.xyz</p>
+                <p className="text-sm font-bold text-white">WeChat</p>
+                <p className="text-xs text-slate-400">houkaijian200588</p>
               </div>
             </a>
           </div>
