@@ -56,7 +56,7 @@ export default function App() {
   return (
     <div className="bg-slate-950 text-slate-200">
       {/* ═══════════════════════════════════════
-          FlowArt #1 — 品牌印象（Sections 1-3）
+          FlowArt — 全部 7 个 Section，无缝沉浸式滚动
           ═══════════════════════════════════════ */}
       <FlowArt aria-label="侯凯健个人主页">
         {/* Section 1 — 我是谁 */}
@@ -146,12 +146,7 @@ export default function App() {
             向下滚动了解更多 ↓
           </p>
         </FlowSection>
-      </FlowArt>
 
-      {/* ═══════════════════════════════════════
-          FlowArt #2 — 作品与联系（Sections 4-7）
-          ═══════════════════════════════════════ */}
-      <FlowArt aria-label="项目与联系">
         {/* Section 4 — 项目作品 */}
         <FlowSection
           aria-label="Projects"
@@ -160,7 +155,7 @@ export default function App() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">
             04 — Projects
           </p>
-          <hr className="my-[1.5vw] border-none border-t border-white/15" />
+          <hr className="my-[2vw] border-none border-t border-white/15" />
           <div>
             <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
               Projects
@@ -169,7 +164,7 @@ export default function App() {
               每一个项目都是一次探索，每一行代码都承载着思考。
             </p>
           </div>
-          <hr className="my-[1.5vw] border-none border-t border-white/15" />
+          <hr className="my-[2vw] border-none border-t border-white/15" />
           <div className="grid gap-[clamp(0.8rem,1.5vw,1.5rem)] sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((p) => (
               <a
@@ -219,7 +214,7 @@ export default function App() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">
             05 — Notes
           </p>
-          <hr className="my-[1.5vw] border-none border-t border-white/15" />
+          <hr className="my-[2vw] border-none border-t border-white/15" />
           <div>
             <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
               Notes
@@ -228,7 +223,7 @@ export default function App() {
               记录后端开发中的技术积累与实践经验。
             </p>
           </div>
-          <hr className="my-[1.5vw] border-none border-t border-white/15" />
+          <hr className="my-[2vw] border-none border-t border-white/15" />
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-[clamp(1.2rem,2vw,2rem)] backdrop-blur">
             <div className="flex items-start gap-4">
               <div className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-orange-500 shadow-[0_0_12px_rgba(253,82,0,0.5)]" />
@@ -261,7 +256,7 @@ export default function App() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">
             06 — Mind Map
           </p>
-          <hr className="my-[1.5vw] border-none border-t border-white/15" />
+          <hr className="my-[2vw] border-none border-t border-white/15" />
           <div>
             <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
               Mind
@@ -272,7 +267,7 @@ export default function App() {
               Java 核心知识体系的思维导图整理。
             </p>
           </div>
-          <hr className="my-[1.5vw] border-none border-t border-white/15" />
+          <hr className="my-[2vw] border-none border-t border-white/15" />
           <div className="flex flex-col items-start gap-[clamp(1rem,2vw,2rem)] rounded-xl border border-white/10 bg-white/[0.03] p-[clamp(1rem,2vw,2rem)] backdrop-blur md:flex-row md:items-center">
             <img
               src="https://houkaijian.xyz/img/mindmaps/1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%BC%A9%E7%95%A5%E5%9B%BE.jpg"
@@ -311,7 +306,7 @@ export default function App() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">
             07 — Connect
           </p>
-          <hr className="my-[1.5vw] border-none border-t border-white/15" />
+          <hr className="my-[2vw] border-none border-t border-white/15" />
           <div>
             <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
               Connect
@@ -320,7 +315,7 @@ export default function App() {
               本人为985大学软工大三学生，正在求职，欢迎各位伯乐！如果你对技术有相似的兴趣，欢迎随时交流。
             </p>
           </div>
-          <hr className="my-[1.5vw] border-none border-t border-white/15" />
+          <hr className="my-[2vw] border-none border-t border-white/15" />
           <div className="flex flex-wrap gap-[clamp(0.8rem,1.5vw,1.5rem)]">
             <a
               href="mailto:1394891389@qq.com"
@@ -356,12 +351,12 @@ export default function App() {
               </div>
             </a>
           </div>
-          <hr className="my-[1.5vw] border-none border-t border-white/10" />
+          <hr className="my-[2vw] border-none border-t border-white/10" />
           <p className="text-center text-[clamp(0.75rem,1vw,0.85rem)] text-white/40">
             © 2026 侯凯健 · 永远相信美好的事情即将发生
           </p>
         </FlowSection>
-      </FlowArt>
+    </FlowArt>
     </div>
   );
 }
