@@ -161,7 +161,7 @@ export default function App() {
           <div className="flex flex-wrap items-center justify-center gap-[clamp(1rem,3vw,3rem)]">
             {/* 后端项目 */}
             <Link to="/projects/backend" className="group">
-              <GlowCard glowColor="blue" size="md">
+              <GlowCard glowColor="blue" size="md" hoverOnly>
                 <div className="flex flex-col items-center justify-center text-center gap-3">
                   <div className="rounded-full bg-blue-500/10 p-4 text-blue-400 transition-transform group-hover:scale-110">
                     <Server className="h-8 w-8" />
@@ -175,7 +175,7 @@ export default function App() {
 
             {/* Agent 开发 */}
             <Link to="/projects/agent" className="group">
-              <GlowCard glowColor="green" size="md">
+              <GlowCard glowColor="green" size="md" hoverOnly>
                 <div className="flex flex-col items-center justify-center text-center gap-3">
                   <div className="rounded-full bg-green-500/10 p-4 text-green-400 transition-transform group-hover:scale-110">
                     <Bot className="h-8 w-8" />
@@ -189,7 +189,7 @@ export default function App() {
 
             {/* 前端设计 */}
             <Link to="/projects/frontend" className="group">
-              <GlowCard glowColor="orange" size="md">
+              <GlowCard glowColor="orange" size="md" hoverOnly>
                 <div className="flex flex-col items-center justify-center text-center gap-3">
                   <div className="rounded-full bg-orange-500/10 p-4 text-orange-400 transition-transform group-hover:scale-110">
                     <Palette className="h-8 w-8" />
@@ -248,52 +248,38 @@ export default function App() {
         </FlowSection>
 
         {/* ═══════════════════════════════
-            Section 5 — 思维导图
+            Section 5 — 留言板
             ═══════════════════════════════ */}
         <FlowSection
-          aria-label="Mind Map"
+          aria-label="Message Board"
           style={{ backgroundColor: '#0f172a', color: '#fff' }}
         >
           <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-40">
-            05 — Mind Map
+            05 — Message Board
           </p>
           <hr className="my-[2vw] border-none border-t border-white/10" />
           <div>
             <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
-              Mind
+              Message
               <br />
-              Map
+              Board
             </h2>
             <p className="mt-[1.5vw] max-w-[50ch] text-[clamp(0.9rem,1.3vw,1.1rem)] leading-relaxed opacity-60">
-              Java 核心知识体系的思维导图整理。
+              给我留下一句话吧
             </p>
           </div>
           <hr className="my-[2vw] border-none border-t border-white/10" />
-          <div
-            className={`flex flex-col gap-[clamp(1rem,2vw,2rem)] p-[clamp(1rem,2vw,2rem)] md:flex-row md:items-center ${cardClass}`}
-          >
-            <img
-              src="https://houkaijian.xyz/img/mindmaps/1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%BC%A9%E7%95%A5%E5%9B%BE.jpg"
-              alt="Java 基础知识导图"
-              className="w-full rounded-lg md:w-[clamp(200px,28vw,360px)] md:max-h-[40vh] object-cover"
-              loading="lazy"
-            />
-            <div className="flex flex-col justify-center">
-              <h3 className="text-[clamp(1.1rem,1.6vw,1.4rem)] font-bold text-white">
-                Java 基础知识导图
-              </h3>
-              <p className="mt-1 text-sm text-white/40">2025-12-06</p>
-              <p className="mt-3 max-w-[50ch] text-[clamp(0.85rem,1.1vw,1rem)] leading-relaxed text-white/40">
-                系统梳理 Java 核心知识体系，涵盖基础语法、面向对象、集合框架、多线程、JVM 等关键知识点。
+          <div className="flex justify-center">
+            <div className={`flex flex-col items-center gap-6 p-[clamp(2rem,3vw,3rem)] ${cardClass}`}>
+              <p className="text-center text-[clamp(0.95rem,1.2vw,1.1rem)] leading-relaxed text-white/40">
+                无论是建议、吐槽还是鼓励<br />每一条留言我都会认真看
               </p>
-              <a
-                href="https://houkaijian.xyz/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/50 transition-colors hover:border-white/20 hover:text-white self-start"
+              <Link
+                to="/message-board"
+                className="inline-flex items-center gap-2 rounded-lg border border-[#fd5200]/40 bg-[#fd5200]/10 px-6 py-3 text-sm font-medium text-[#fd5200] transition-colors hover:bg-[#fd5200]/20 hover:border-[#fd5200]/60"
               >
-                查看详情 →
-              </a>
+                去留言 →
+              </Link>
             </div>
           </div>
         </FlowSection>

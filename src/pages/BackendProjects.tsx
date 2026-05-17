@@ -22,6 +22,7 @@ const projects = [
     urls: [
       { label: "拼团平台", href: "https://gitcode.com/2301_79962008/group_buy_market" },
       { label: "支付商城", href: "https://gitcode.com/2301_79962008/s-pay-mall-ddd" },
+      { label: "在线体验", href: "http://8.140.29.226" },
     ],
   },
   {

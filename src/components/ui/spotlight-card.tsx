@@ -8,6 +8,7 @@ interface GlowCardProps {
   width?: string | number;
   height?: string | number;
   customSize?: boolean;
+  hoverOnly?: boolean;
 }
 
 const glowColorMap = {
@@ -31,7 +32,8 @@ const GlowCard: React.FC<GlowCardProps> = ({
   size = 'md',
   width,
   height,
-  customSize = false
+  customSize = false,
+  hoverOnly = false,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -148,6 +150,17 @@ const GlowCard: React.FC<GlowCardProps> = ({
           inset: -10px;
           border-width: 10px;
         }
+        /* hoverOnly 模式：默认隐藏流光，悬停时显示 */
+        [data-glow].glow-hover-only {
+          --bg-spot-opacity: 0;
+          --border-spot-opacity: 0;
+          --border-light-opacity: 0;
+        }
+        [data-glow].glow-hover-only:hover {
+          --bg-spot-opacity: 0.1;
+          --border-spot-opacity: 1;
+          --border-light-opacity: 1;
+        }
       `}</style>
       <div
         ref={cardRef}
@@ -164,6 +177,7 @@ const GlowCard: React.FC<GlowCardProps> = ({
           p-4 
           gap-4 
           backdrop-blur-[5px]
+          ${hoverOnly ? 'glow-hover-only' : ''}
           ${className}
         `}
       >
