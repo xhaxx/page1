@@ -37,9 +37,7 @@ export default function AboutMe() {
       >
         点击这个
         <a
-          href="https://houkaijian.xyz"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/hyperframes/index.html"
           className="relative mx-[0.15em] inline-block cursor-pointer no-underline"
           aria-label="了解现实世界的我"
         >

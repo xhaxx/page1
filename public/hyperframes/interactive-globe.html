@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D 拟真地球 - 交互式</title>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background: #000;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      #container {
+        width: 100%;
+        height: 100%;
+        cursor: grab;
+      }
+      #container:active {
+        cursor: grabbing;
+      }
+      #container.hovering-china {
+        cursor: pointer;
+      }
+
+      /* ── 吉林省坐标标记 ────────────────────── */
+      #jilin-marker {
+        position: absolute;
+        pointer-events: none;
+        z-index: 10;
+        display: none;
+        transition: opacity 0.25s ease;
+      }
+      #jilin-marker .dot {
+        width: 6px;
+        height: 6px;
+        background: #5ef0ff;
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        box-shadow:
+          0 0 8px rgba(94, 240, 255, 0.9),
+          0 0 20px rgba(94, 240, 255, 0.4);
+        animation: marker-dot-pulse 2s ease-in-out infinite;
+      }
+      #jilin-marker .ring {
+        width: 18px;
+        height: 18px;
+        border: 1.5px solid rgba(94, 240, 255, 0.45);
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        animation: marker-ring-ping 2s ease-out infinite;
+      }
+      #jilin-marker .line {
+        position: absolute;
+        width: 1px;
+        height: 14px;
+        background: linear-gradient(to top, rgba(94, 240, 255, 0.7), transparent);
+        transform: translate(-50%, -100%);
+      }
+      #jilin-marker .label-box {
+        position: absolute;
+        transform: translate(-50%, calc(-100% - 16px));
+        background: rgba(8, 20, 40, 0.82);
+        border: 1px solid rgba(94, 240, 255, 0.25);
+        border-radius: 4px;
+        padding: 2px 10px;
+        color: #bef0ff;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        white-space: nowrap;
+        backdrop-filter: blur(8px);
+      }
+      @keyframes marker-dot-pulse {
+        0%, 100% { box-shadow: 0 0 8px rgba(94, 240, 255, 0.9), 0 0 20px rgba(94, 240, 255, 0.4); }
+        50%      { box-shadow: 0 0 4px rgba(94, 240, 255, 0.5), 0 0 10px rgba(94, 240, 255, 0.2); }
+      }
+      @keyframes marker-ring-ping {
+        0%   { transform: translate(-50%, -50%) scale(0.6); opacity: 0.8; }
+        100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+      }
+
+      /* ── 提示 ─────────────────────────────── */
+      #hint {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 14px;
+        pointer-events: none;
+        z-index: 5;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <div id="jilin-marker">
+      <div class="label-box">吉林</div>
+      <div class="line"></div>
+      <div class="ring"></div>
+      <div class="dot"></div>
+    </div>
+
+
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+      // ── DOM ─────────────────────────────────────
+      const container = document.getElementById("container");
+      const markerEl = document.getElementById("jilin-marker");
+      const hintEl = document.getElementById("hint");
+
+      // ── 场景初始化 ──────────────────────────────
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(
+        38,
+        container.clientWidth / container.clientHeight,
+        0.1,
+        20,
+      );
+      camera.position.set(0, 0.3, 3.6);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.2;
+      container.appendChild(renderer.domElement);
+
+      // ── 星空背景 ───────────────────────────────
+      const starsGeo = new THREE.BufferGeometry();
+      const starsCount = 1200;
+      const starsPositions = new Float32Array(starsCount * 3);
+      for (let i = 0; i < starsCount; i++) {
+        const theta = (i * 1.6180339887) % (Math.PI * 2);
+        const phi = Math.acos(1 - (2 * (i + 0.5)) / starsCount);
+        const radius = 6 + (i % 4) * 2;
+        starsPositions[i * 3] = Math.sin(phi) * Math.cos(theta) * radius;
+        starsPositions[i * 3 + 1] = Math.sin(phi) * Math.sin(theta) * radius;
+        starsPositions[i * 3 + 2] = Math.cos(phi) * radius;
+      }
+      starsGeo.setAttribute(
+        "position",
+        new THREE.BufferAttribute(starsPositions, 3),
+      );
+      const starsMat = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.018,
+        transparent: true,
+        opacity: 0.85,
+        sizeAttenuation: true,
+      });
+      const stars = new THREE.Points(starsGeo, starsMat);
+      scene.add(stars);
+
+      // ── 光照 ───────────────────────────────────
+      scene.add(new THREE.AmbientLight(0x335577, 1.5));
+      const sunLight = new THREE.DirectionalLight(0xffffff, 3.0);
+      sunLight.position.set(5, 1.5, 3);
+      scene.add(sunLight);
+      const fillLight = new THREE.DirectionalLight(0x5577aa, 1.0);
+      fillLight.position.set(-3, -0.5, -2);
+      scene.add(fillLight);
+
+      // ── 地球组 ─────────────────────────────────
+      const earthGroup = new THREE.Group();
+      scene.add(earthGroup);
+
+      // 地球球体
+      const earthGeo = new THREE.SphereGeometry(1, 96, 64);
+
+      // ── 中国 mask Canvas ────────────────────────
+      function createChinaMask(size = 512) {
+        const w = size * 2;
+        const h = size;
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, w, h);
+
+        function lonLatToXY(lon, lat) {
+          const u = (lon + 180) / 360;
+          const v = (90 - lat) / 180;
+          return { x: u * w, y: v * h };
+        }
+
+        // 中国陆地边界（简化，含台湾、海南）
+        const mainland = [
+          [53.5, 123],
+          [50.0, 127],
+          [43.0, 131],
+          [40.0, 125],
+          [39.0, 119],
+          [37.5, 122],
+          [35.0, 120],
+          [31.0, 122],
+          [28.5, 121.5],
+          [25.5, 121],
+          [24.0, 118],
+          [22.0, 114],
+          [21.6, 110],
+          [21.8, 108],
+          [22.5, 106],
+          [23.5, 105],
+          [22.2, 100.5],
+          [24.5, 98.0],
+          [28.0, 97.5],
+          [29.0, 92.5],
+          [27.5, 89.0],
+          [28.2, 85.0],
+          [31.5, 79.5],
+          [35.0, 76.5],
+          [39.5, 73.5],
+          [41.0, 80.0],
+          [45.5, 82.5],
+          [47.0, 85.5],
+          [49.0, 87.5],
+          [47.5, 96.5],
+          [46.5, 104.0],
+          [47.5, 109.0],
+          [49.5, 117.0],
+          [53.5, 120.0],
+        ];
+
+        const taiwan = [
+          [25.3, 121.5],
+          [24.0, 121.8],
+          [22.0, 121.0],
+          [21.9, 120.5],
+          [22.5, 120.3],
+          [24.5, 120.8],
+          [25.3, 121.0],
+        ];
+
+        const hainan = [
+          [19.8, 109.0],
+          [18.2, 109.8],
+          [18.3, 110.6],
+          [19.5, 111.0],
+          [20.0, 110.8],
+        ];
+
+        ctx.fillStyle = "#fff";
+
+        for (const polygon of [mainland, taiwan, hainan]) {
+          ctx.beginPath();
+          const p0 = lonLatToXY(polygon[0][1], polygon[0][0]);
+          ctx.moveTo(p0.x, p0.y);
+          for (let i = 1; i < polygon.length; i++) {
+            const p = lonLatToXY(polygon[i][1], polygon[i][0]);
+            ctx.lineTo(p.x, p.y);
+          }
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        return canvas;
+      }
+
+      const chinaMask = createChinaMask();
+
+      // ── 纹理加载 ──────────────────────────────
+      const textureLoader = new THREE.TextureLoader();
+
+      // 卫星纹理
+      const earthTex = textureLoader.load("assets/earth-texture-nasa.jpg");
+      earthTex.colorSpace = THREE.SRGBColorSpace;
+
+      const earthMat = new THREE.MeshStandardMaterial({
+        map: earthTex,
+        roughness: 0.7,
+        metalness: 0.05,
+      });
+      const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+      earthGroup.add(earthMesh);
+
+      // 中国高亮层（初始隐藏）
+      const chinaMaskTex = new THREE.CanvasTexture(chinaMask);
+      chinaMaskTex.colorSpace = THREE.LinearSRGBColorSpace;
+      chinaMaskTex.minFilter = THREE.LinearFilter;
+      chinaMaskTex.magFilter = THREE.LinearFilter;
+
+      const highlightGeo = new THREE.SphereGeometry(1.006, 96, 64);
+      const highlightMat = new THREE.MeshBasicMaterial({
+        color: 0xffaa00,
+        transparent: true,
+        opacity: 0.28,
+        alphaMap: chinaMaskTex,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+      const highlightMesh = new THREE.Mesh(highlightGeo, highlightMat);
+      highlightMesh.visible = false;
+      earthGroup.add(highlightMesh);
+
+      // 大气光晕
+      const glowGeo = new THREE.SphereGeometry(1.03, 72, 48);
+      const glowMat = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uColor: { value: new THREE.Color(0x4488ff) },
+        },
+        vertexShader: /* glsl */ `
+          varying vec3 vNormal;
+          varying vec3 vPosition;
+          void main() {
+            vec4 worldPos = modelMatrix * vec4(position, 1.0);
+            vNormal = normalize(mat3(modelMatrix) * normal);
+            vPosition = worldPos.xyz;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: /* glsl */ `
+          varying vec3 vNormal;
+          varying vec3 vPosition;
+          uniform vec3 uColor;
+          void main() {
+            vec3 viewDir = normalize(cameraPosition - vPosition);
+            float fresnel = 1.0 - abs(dot(viewDir, vNormal));
+            fresnel = pow(fresnel, 3.5);
+            float alpha = fresnel * 0.15;
+            gl_FragColor = vec4(uColor, alpha);
+          }
+        `,
+        transparent: true,
+        side: THREE.BackSide,
+        depthWrite: false,
+      });
+      const glowMesh = new THREE.Mesh(glowGeo, glowMat);
+      earthGroup.add(glowMesh);
+
+      // ── OrbitControls ────────────────────────────
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.4;
+      controls.minDistance = 1.5;
+      controls.maxDistance = 6;
+      controls.target.set(0, 0, 0);
+      controls.update();
+
+      // ── 鼠标 / Raycaster ────────────────────────
+      const mouse = new THREE.Vector2();
+      const raycaster = new THREE.Raycaster();
+      raycaster.far = 2; // 只检测地球附近
+
+      let isHoveringChina = false;
+
+      // 缓存 mask pixel data 用于 O(1) 查询
+      const maskCtx = chinaMask.getContext("2d");
+      const maskW = chinaMask.width;
+      const maskH = chinaMask.height;
+      // 预读取整个 mask 到 ImageData（也可以用 getImageData 按需）
+      // 但 512x1024 的 getImageData 较大，改为按需查询
+
+      function isInChina(uv) {
+        const x = Math.floor(uv.x * maskW) % maskW;
+        const y = Math.floor((1 - uv.y) * maskH) % maskH;
+        const px = maskCtx.getImageData(x, y, 1, 1).data;
+        // R > 128 即为白色区域（中国）
+        return px[0] > 128;
+      }
+
+      function onMouseMove(event) {
+        mouse.x = (event.clientX / container.clientWidth) * 2 - 1;
+        mouse.y = -(event.clientY / container.clientHeight) * 2 + 1;
+      }
+
+      function onResize() {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      }
+
+      window.addEventListener("mousemove", onMouseMove, { passive: true });
+      window.addEventListener("resize", onResize);
+
+      // ── 吉林箭头：经纬度 → 3D 坐标 ────────────────
+      function latLonToVec3(lat, lon, radius) {
+        const phi = THREE.MathUtils.degToRad(90 - lat);
+        const theta = THREE.MathUtils.degToRad(lon + 180);
+        return new THREE.Vector3(
+          -radius * Math.sin(phi) * Math.cos(theta),
+          radius * Math.cos(phi),
+          radius * Math.sin(phi) * Math.sin(theta),
+        );
+      }
+
+      const jilinLat = 43.8;
+      const jilinLon = 126.0;
+      const jilinWorldPos = latLonToVec3(jilinLat, jilinLon, 1.04);
+      const screenPos = new THREE.Vector2();
+
+      function updateMarker() {
+        const worldPos = jilinWorldPos.clone();
+        earthGroup.localToWorld(worldPos);
+
+        // 视点到标记点的方向
+        const viewDir = camera.position.clone().sub(worldPos).normalize();
+        // 球面法线（从球心指向该点）
+        const normal = worldPos.clone().normalize();
+        // 面向相机程度：1=正对, 0=边缘, 负=背面
+        const visibility = viewDir.dot(normal);
+
+        // 平滑透明度映射
+        let opacity;
+        if (visibility <= 0) {
+          opacity = 0;
+        } else {
+          // ease-in-out transition zone
+          opacity = Math.min(1, visibility * 2.5);
+          opacity = opacity * opacity * (3 - 2 * opacity); // smoothstep
+        }
+
+        markerEl.style.opacity = opacity;
+
+        if (opacity < 0.02) {
+          markerEl.style.display = "none";
+          return;
+        }
+
+        markerEl.style.display = "block";
+
+        // 屏幕坐标投影
+        const projected = worldPos.clone().project(camera);
+        screenPos.set(
+          (projected.x * 0.5 + 0.5) * container.clientWidth,
+          (-projected.y * 0.5 + 0.5) * container.clientHeight,
+        );
+        markerEl.style.left = screenPos.x + "px";
+        markerEl.style.top = screenPos.y + "px";
+      }
+
+      // ── 动画循环 ──────────────────────────────
+      function animate() {
+        requestAnimationFrame(animate);
+
+        controls.update();
+
+        // Raycaster 检测中国区域
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObject(earthMesh, false);
+
+        const wasHovering = isHoveringChina;
+
+        if (intersects.length > 0) {
+          const uv = intersects[0].uv;
+          if (uv) {
+            isHoveringChina = isInChina(uv);
+          } else {
+            isHoveringChina = false;
+          }
+        } else {
+          isHoveringChina = false;
+        }
+
+        // 更新高亮层
+        highlightMesh.visible = isHoveringChina;
+
+        // 更新光标
+        if (isHoveringChina !== wasHovering) {
+          if (isHoveringChina) {
+            container.classList.add("hovering-china");
+          } else {
+            container.classList.remove("hovering-china");
+          }
+        }
+
+        // 更新标记
+        updateMarker();
+
+        // 渲染
+        renderer.render(scene, camera);
+
+        // 更新 shader uniform
+        glowMat.uniforms.uTime.value += 0.01;
+      }
+
+      // ── 启动 ────────────────────────────────────
+      animate();
+
+      // 隐藏加载闪烁
+      container.style.opacity = "1";
+      console.log(
+        "%c🌍 3D 拟真地球已就绪 %c| 拖拽旋转 | 滚轮缩放 | 悬浮中国高亮 | 吉林坐标箭头",
+        "font-size:16px;color:#4af;",
+        "color:#aaa;",
+      );
+    </script>
+  </body>
+</html>
