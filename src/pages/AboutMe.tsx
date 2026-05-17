@@ -37,7 +37,7 @@ export default function AboutMe() {
       >
         点击这个
         <a
-          href="/hyperframes/index.html"
+          href="/hyperframes/interactive-globe.html"
           target="_blank"
           rel="noopener noreferrer"
           className="relative mx-[0.15em] inline-block cursor-pointer no-underline"
