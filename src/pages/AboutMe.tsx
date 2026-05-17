@@ -38,6 +38,8 @@ export default function AboutMe() {
         点击这个
         <a
           href="/hyperframes/index.html"
+          target="_blank"
+          rel="noopener noreferrer"
           className="relative mx-[0.15em] inline-block cursor-pointer no-underline"
           aria-label="了解现实世界的我"
         >
