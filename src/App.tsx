@@ -4,16 +4,6 @@ import { GlowCard } from '@/components/ui/spotlight-card';
 import { Server, Bot, Palette } from 'lucide-react';
 
 // ──────────────────────────────────────────
-// 统一样式：标签
-// ──────────────────────────────────────────
-const tagClass =
-  'inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300';
-
-function Tag({ label }: { label: string }) {
-  return <span className={tagClass}>{label}</span>;
-}
-
-// ──────────────────────────────────────────
 // 向下滚动箭头（Section 1 专用）
 // ──────────────────────────────────────────
 function ScrollArrow() {
