@@ -1,10 +1,39 @@
+import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, MessageSquare } from "lucide-react";
-
-const cardClass =
-  "rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur p-6";
+import { ArrowLeft, LogOut } from "lucide-react";
+import { hasToken, clearToken } from "@/api/messages";
+import type { LoginResponse } from "@/api/messages";
+import LoginCard from "@/components/message/LoginCard";
+import MessageForm from "@/components/message/MessageForm";
+import MessageList from "@/components/message/MessageList";
 
 export default function MessageBoard() {
+  const [user, setUser] = useState<LoginResponse | null>(() => {
+    if (hasToken()) {
+      const saved = localStorage.getItem("mb_user");
+      return saved ? JSON.parse(saved) : null;
+    }
+    return null;
+  });
+  const [activeTab, setActiveTab] = useState<"public" | "mine">("public");
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const handleLogin = useCallback((data: LoginResponse) => {
+    localStorage.setItem("mb_user", JSON.stringify(data));
+    setUser(data);
+    setRefreshTrigger((n) => n + 1);
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    clearToken();
+    localStorage.removeItem("mb_user");
+    setUser(null);
+  }, []);
+
+  const handleMessageSent = useCallback(() => {
+    setRefreshTrigger((n) => n + 1);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#09090b] text-white">
       <div className="mx-auto max-w-2xl px-6 py-12">
@@ -22,18 +51,64 @@ export default function MessageBoard() {
         </h1>
         <p className="mb-10 text-white/40">给我留下一句话吧</p>
 
-        {/* 占位框架 — 后续版本接入实际留言板 */}
-        <div className={`flex flex-col items-center gap-6 py-16 ${cardClass}`}>
-          <div className="rounded-full bg-[#fd5200]/10 p-5 text-[#fd5200]">
-            <MessageSquare className="h-10 w-10" />
+        {!user ? (
+          /* 未登录 — 显示登录卡片 */
+          <LoginCard onLogin={handleLogin} />
+        ) : (
+          /* 已登录 */
+          <div className="space-y-6">
+            {/* 用户信息栏 */}
+            <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur px-4 py-3">
+              <div>
+                <span className="text-sm font-bold text-white">
+                  {user.nickname || user.email}
+                </span>
+                <span className="ml-2 text-xs text-white/30">{user.email}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1 text-xs text-white/30 transition-colors hover:text-white/50"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                退出
+              </button>
+            </div>
+
+            {/* 留言表单 */}
+            <MessageForm onSuccess={handleMessageSent} />
+
+            {/* Tab 切换 */}
+            <div className="flex gap-1 rounded-lg border border-white/10 bg-white/[0.02] p-1">
+              <button
+                onClick={() => setActiveTab("public")}
+                className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                  activeTab === "public"
+                    ? "bg-white/10 text-white"
+                    : "text-white/30 hover:text-white/50"
+                }`}
+              >
+                全部留言
+              </button>
+              <button
+                onClick={() => setActiveTab("mine")}
+                className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                  activeTab === "mine"
+                    ? "bg-white/10 text-white"
+                    : "text-white/30 hover:text-white/50"
+                }`}
+              >
+                我的留言
+              </button>
+            </div>
+
+            {/* 留言列表 */}
+            <MessageList
+              key={activeTab + refreshTrigger}
+              mode={activeTab}
+              refreshTrigger={refreshTrigger}
+            />
           </div>
-          <p className="text-center text-lg text-white/50">
-            留言板功能即将上线
-          </p>
-          <p className="text-center text-sm text-white/20">
-            后续版本将接入真实留言服务<br />敬请期待
-          </p>
-        </div>
+        )}
       </div>
     </div>
   );
