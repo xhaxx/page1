@@ -1,5 +1,4 @@
-declare const __API_BASE_URL__: string;
-const API_BASE = __API_BASE_URL__ || "http://localhost:2005";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:2005";
 
 function getToken(): string | null {
   return localStorage.getItem("mb_token");
