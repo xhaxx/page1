@@ -1,10 +1,13 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), 'VITE_')
+  // mode === 'production' 时强制使用生产 API 地址，不依赖 .env 文件加载
+  const apiBase = mode === 'production'
+    ? 'https://api.houkaijian.xyz'
+    : 'http://localhost:2005'
 
   return {
     plugins: [react(), tailwindcss()],
@@ -14,9 +17,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      __API_BASE_URL__: JSON.stringify(
-        env.VITE_API_BASE_URL || 'http://localhost:2005'
-      ),
+      __API_BASE_URL__: JSON.stringify(apiBase),
     },
   }
 })
