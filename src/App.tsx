@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import FlowArt, { FlowSection } from '@/components/ui/story-scroll';
 import { GlowCard } from '@/components/ui/spotlight-card';
@@ -36,6 +37,14 @@ const cardClass =
 // App
 // ──────────────────────────────────────────
 export default function App() {
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const handleCopy = (label: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(label);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
   return (
     <div className="bg-slate-950 text-slate-200">
       {/* 跃动箭头动画 */}
@@ -318,16 +327,18 @@ export default function App() {
           </div>
           <hr className="my-[2vw] border-none border-t border-white/10" />
           <div className="flex flex-wrap gap-[clamp(0.8rem,1.5vw,1.5rem)]">
-            <a
-              href="mailto:1394891389@qq.com"
-              className={`flex items-center gap-3 px-[clamp(1rem,1.5vw,1.5rem)] py-[clamp(0.8rem,1.2vw,1.2rem)] ${cardClass}`}
+            <button
+              onClick={() => handleCopy('email', '1394891389@qq.com')}
+              className={`flex cursor-pointer items-center gap-3 px-[clamp(1rem,1.5vw,1.5rem)] py-[clamp(0.8rem,1.2vw,1.2rem)] ${cardClass} text-left`}
             >
               <span className="text-2xl">📧</span>
               <div>
                 <p className="text-sm font-bold text-white">Email</p>
-                <p className="text-xs text-white/40">1394891389@qq.com</p>
+                <p className="text-xs text-white/40">
+                  {copied === 'email' ? '已复制 ✓' : '1394891389@qq.com'}
+                </p>
               </div>
-            </a>
+            </button>
             <a
               href="https://github.com/xhaxx"
               target="_blank"
@@ -340,17 +351,18 @@ export default function App() {
                 <p className="text-xs text-white/40">xhaxx</p>
               </div>
             </a>
-            <a
-              href="#"
-              className={`flex items-center gap-3 px-[clamp(1rem,1.5vw,1.5rem)] py-[clamp(0.8rem,1.2vw,1.2rem)] ${cardClass}`}
-              onClick={(e) => e.preventDefault()}
+            <button
+              onClick={() => handleCopy('wechat', 'houkaijian200588')}
+              className={`flex cursor-pointer items-center gap-3 px-[clamp(1rem,1.5vw,1.5rem)] py-[clamp(0.8rem,1.2vw,1.2rem)] ${cardClass} text-left`}
             >
               <span className="text-2xl">💬</span>
               <div>
                 <p className="text-sm font-bold text-white">WeChat</p>
-                <p className="text-xs text-white/40">houkaijian200588</p>
+                <p className="text-xs text-white/40">
+                  {copied === 'wechat' ? '已复制 ✓' : 'houkaijian200588'}
+                </p>
               </div>
-            </a>
+            </button>
           </div>
           <hr className="my-[2vw] border-none border-t border-white/10" />
           <p className="text-center text-[clamp(0.75rem,1vw,0.85rem)] text-white/30">
