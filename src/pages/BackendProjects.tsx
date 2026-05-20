@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ExternalLink, Server, Database, MessageCircle } from "lucide-react";
+import { ArrowLeft, ExternalLink, Server, Database, MessageCircle, Activity } from "lucide-react";
 
 const cardClass =
   "rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur p-6 transition-all hover:border-white/20 hover:bg-white/[0.06]";
@@ -32,6 +32,14 @@ const projects = [
     desc: "一套轻量小规模、生产级健康可用的微服务架构，包含数据库、本地/分布式缓存、消息队列三大核心组件。完整落地分布式数据一致性解决方案，含网关、订单、库存三大微服务。",
     tags: ["微服务", "Redis", "RabbitMQ", "分布式一致性"],
     url: "https://github.com/xhaxx/weifu-microservice",
+  },
+  {
+    icon: <Activity className="h-5 w-5" />,
+    name: "otel-springboot-demo",
+    label: "可观测性练手项目",
+    desc: "面向面试准备的完整可观测性练手项目，演示分布式链路追踪、指标采集、日志聚合三大可观测性支柱，基于 Spring Boot + OpenTelemetry 构建。",
+    tags: ["Spring Boot", "OpenTelemetry", "链路追踪", "指标采集", "日志聚合", "Grafana"],
+    url: "https://github.com/xhaxx/otel-springboot-demo",
   },
 ];
 
