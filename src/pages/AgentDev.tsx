@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ExternalLink, Bot, Cpu } from "lucide-react";
+import { ArrowLeft, ExternalLink, Bot, Cpu, Terminal } from "lucide-react";
 
 export default function AgentDev() {
   return (
@@ -62,6 +62,56 @@ export default function AgentDev() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-lg border border-[#fd5200]/30 bg-[#fd5200]/10 px-6 py-3 text-sm font-medium text-[#fd5200] transition-all hover:bg-[#fd5200]/20"
+          >
+            <Cpu className="h-4 w-4" />
+            查看项目源码
+            <ExternalLink className="h-3 w-3" />
+          </a>
+        </div>
+
+        {/* xxCode */}
+        <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur p-8">
+          <div className="mb-6 flex items-center gap-3">
+            <span className="rounded-lg bg-emerald-500/10 p-2 text-emerald-400">
+              <Terminal className="h-6 w-6" />
+            </span>
+            <div>
+              <h2 className="text-2xl font-bold">xxCode</h2>
+              <p className="text-sm text-white/30">终端 AI 编码助手</p>
+            </div>
+          </div>
+
+          <p className="mb-6 max-w-2xl text-sm leading-relaxed text-white/50">
+            类 Claude Code 的终端 AI 编码助手 —— 多模型可切换、架构清晰、易于扩展。
+            支持 Agent 自主循环（Plan → Think → Act → Observe → Reflect）、
+            子代理委托、上下文自动压缩、四级 Bash 安全分级，
+            内置 DeepSeek / Claude 双模型适配，流式输出实时展示。
+          </p>
+
+          <div className="mb-6 flex flex-wrap gap-2">
+            {[
+              "TypeScript",
+              "Node.js",
+              "Agent Loop",
+              "Sub-agent",
+              "DeepSeek API",
+              "Claude API",
+              "Context Compaction",
+            ].map((t) => (
+              <span
+                key={t}
+                className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+
+          <a
+            href="https://github.com/xhaxx/xxCode"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-6 py-3 text-sm font-medium text-emerald-400 transition-all hover:bg-emerald-400/20"
           >
             <Cpu className="h-4 w-4" />
             查看项目源码
