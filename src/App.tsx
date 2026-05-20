@@ -245,7 +245,7 @@ export default function App() {
                   全面记录 Spring Boot 框架核心原理、Spring AI Agent 开发实践、数据库设计方法论以及分布式系统架构经验。持续更新中。
                 </p>
                 <a
-                  href="https://houkaijian.xyz/"
+                  href="https://gitcode.com/2301_79962008/note1"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-4 inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/60 transition-colors hover:border-white/20 hover:text-white"
