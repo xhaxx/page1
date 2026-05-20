@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import FlowArt, { FlowSection } from '@/components/ui/story-scroll';
 import { GlowCard } from '@/components/ui/spotlight-card';
-import { Server, Bot, Palette } from 'lucide-react';
+import { Server, Bot, Palette, MessageCircle } from 'lucide-react';
 
 // ──────────────────────────────────────────
 // 向下滚动箭头（Section 1 专用）
@@ -127,6 +127,16 @@ export default function App() {
                 </p>
               </div>
             ))}
+          </div>
+          <hr className="my-[2vw] border-none border-t border-white/60" />
+          <div className="flex justify-center">
+            <Link
+              to="/chat"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white/60 transition-all hover:border-[#fd5200]/40 hover:text-[#fd5200] hover:bg-[#fd5200]/5"
+            >
+              <MessageCircle className="h-4 w-4" />
+              与我对话
+            </Link>
           </div>
         </FlowSection>
 

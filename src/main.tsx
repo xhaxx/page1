@@ -8,6 +8,7 @@ import BackendProjects from './pages/BackendProjects.tsx'
 import AgentDev from './pages/AgentDev.tsx'
 import FrontendDesign from './pages/FrontendDesign.tsx'
 import MessageBoard from './pages/MessageBoard.tsx'
+import ComingSoon from './pages/ComingSoon.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/projects/agent" element={<AgentDev />} />
         <Route path="/projects/frontend" element={<FrontendDesign />} />
         <Route path="/message-board" element={<MessageBoard />} />
+        <Route path="/chat" element={<ComingSoon />} />
       </Routes>
     </HashRouter>
   </StrictMode>,
