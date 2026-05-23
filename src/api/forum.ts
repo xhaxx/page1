@@ -1,4 +1,4 @@
-const API_BASE = "http://8.140.29.226:2005/api";
+const API_BASE = "https://api.houkaijian.xyz/api";
 
 export interface Post {
   id: number;
