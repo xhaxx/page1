@@ -242,62 +242,84 @@ export default function App() {
             </p>
           </div>
           <hr className="my-[2vw] border-none border-t border-white/10" />
-          <div className={`p-[clamp(1.2rem,2vw,2rem)] ${cardClass}`}>
-            <div className="flex items-start gap-4">
-              <div className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-white/20" />
-              <div>
-                <h3 className="text-[clamp(1.1rem,1.5vw,1.3rem)] font-bold text-white">
-                  后端 Java Spring Boot
-                </h3>
-                <p className="mt-1 text-sm text-white/40">个人笔记 · 2026-02-07</p>
-                <p className="mt-3 max-w-[60ch] text-[clamp(0.85rem,1.1vw,1rem)] leading-relaxed text-white/40">
-                  全面记录 Spring Boot 框架核心原理、Spring AI Agent 开发实践、数据库设计方法论以及分布式系统架构经验。持续更新中。
-                </p>
-                <a
-                  href="https://gitcode.com/2301_79962008/note1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/60 transition-colors hover:border-white/20 hover:text-white"
-                >
-                  阅读笔记 →
-                </a>
+          <div className="flex flex-col gap-4">
+            <div className={`p-[clamp(1.2rem,2vw,2rem)] ${cardClass}`}>
+              <div className="flex items-start gap-4">
+                <div className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-[#fd5200]/50" />
+                <div>
+                  <h3 className="text-[clamp(1.1rem,1.5vw,1.3rem)] font-bold text-white">
+                    Spring Boot 核心技术笔记
+                  </h3>
+                  <p className="mt-1 text-sm text-white/40">飞书云文档 · 持续更新</p>
+                  <p className="mt-3 max-w-[60ch] text-[clamp(0.85rem,1.1vw,1rem)] leading-relaxed text-white/40">
+                    Spring Boot 框架核心原理、数据库设计方法论、分布式系统架构经验、Docker 部署实践。
+                  </p>
+                  <a
+                    href="https://tcn9trcdlcua.feishu.cn/wiki/JU16wkfTLiky2VkfYXNcVh27nHb"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/60 transition-colors hover:border-white/20 hover:text-white"
+                  >
+                    阅读笔记 →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className={`p-[clamp(1.2rem,2vw,2rem)] ${cardClass}`}>
+              <div className="flex items-start gap-4">
+                <div className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-blue-400/50" />
+                <div>
+                  <h3 className="text-[clamp(1.1rem,1.5vw,1.3rem)] font-bold text-white">
+                    AI Agent 开发实践笔记
+                  </h3>
+                  <p className="mt-1 text-sm text-white/40">飞书云文档 · 持续更新</p>
+                  <p className="mt-3 max-w-[60ch] text-[clamp(0.85rem,1.1vw,1rem)] leading-relaxed text-white/40">
+                    Spring AI Agent 开发实践、LLM 应用架构设计、多 Agent 协作系统探索。
+                  </p>
+                  <a
+                    href="https://tcn9trcdlcua.feishu.cn/wiki/T3JiwgWv4iTQDmkZYvrc1Ebjnoe"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/60 transition-colors hover:border-white/20 hover:text-white"
+                  >
+                    阅读笔记 →
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </FlowSection>
 
         {/* ═══════════════════════════════
-            Section 5 — 留言板
+            Section 5 — 论坛
             ═══════════════════════════════ */}
         <FlowSection
-          aria-label="Message Board"
+          aria-label="Forum"
           style={{ backgroundColor: '#0f172a', color: '#fff' }}
         >
           <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-40">
-            05 — Message Board
+            05 — Forum
           </p>
           <hr className="my-[2vw] border-none border-t border-white/10" />
           <div>
             <h2 className="text-[clamp(3rem,10vw,12rem)] font-bold leading-[0.85] uppercase tracking-tight">
-              Message
-              <br />
-              Board
+              Forum
             </h2>
             <p className="mt-[1.5vw] max-w-[50ch] text-[clamp(0.9rem,1.3vw,1.1rem)] leading-relaxed opacity-60">
-              给我留下一句话吧
+              交流想法，分享见解
             </p>
           </div>
           <hr className="my-[2vw] border-none border-t border-white/10" />
           <div className="flex justify-center">
             <div className={`flex flex-col items-center gap-6 p-[clamp(2rem,3vw,3rem)] ${cardClass}`}>
               <p className="text-center text-[clamp(0.95rem,1.2vw,1.1rem)] leading-relaxed text-white/40">
-                无论是建议、吐槽还是鼓励<br />每一条留言我都会认真看
+                无论是技术讨论、项目建议还是日常闲聊<br />每一条帖子我都会认真看
               </p>
               <Link
-                to="/message-board"
+                to="/forum"
                 className="inline-flex items-center gap-2 rounded-lg border border-[#fd5200]/40 bg-[#fd5200]/10 px-6 py-3 text-sm font-medium text-[#fd5200] transition-colors hover:bg-[#fd5200]/20 hover:border-[#fd5200]/60"
               >
-                去留言 →
+                进入论坛 →
               </Link>
             </div>
           </div>
